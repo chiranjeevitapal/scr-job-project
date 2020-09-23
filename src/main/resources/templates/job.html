@@ -10,7 +10,7 @@
 <th:block th:include="fragments/header"/>
 <div class="container">
     <div class="row">
-        <div class="col-sm-12">
+        <div class="col-sm-12 col-md-8 col-lg-8">
             <div class="list-group mt-3 borderless">
                 <div class="list-group-item">
                     <h4 th:text="${job.postTitle}"></h4>
@@ -22,14 +22,14 @@
                     </div>
                     <p class="mb-1" th:text="${map.value}"></p>
                 </div>
+                <div class="list-group-item" th:each="link : ${howToApplyLinks}">
+                    <a th:href="@{${link}}" target="_blank" class="btn btn-info btn-lg">Apply Now</a>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="list-group-item" th:each="link : ${howToApplyLinks}">
-                <a th:href="@{${link}}" target="_blank" class="btn btn-info btn-lg">Apply Now</a>
-            </div>
+        <div class="col-sm-12 col-md-4 col-lg-4 mt-1">
+            <th:block th:include="fragments/locationJobs"/>
+            <th:block th:include="fragments/companyJobs"/>
         </div>
     </div>
 </div>

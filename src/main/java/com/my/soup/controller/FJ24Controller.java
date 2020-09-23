@@ -20,8 +20,17 @@ public class FJ24Controller {
 
     @GetMapping("/")
     public String home(Model model) {
-        model.addAttribute("totalPages", ScrapeConstants.FJ24_MAIN_URL.length);
-        model.addAttribute("data", fJ24DataService.readDataFromJson());
+        model.addAttribute("pages", ScrapeConstants.FJ24_MAIN_URL);
+        model.addAttribute("data", fJ24DataService.readDataFromJson(1));
+        model.addAttribute("pageIndex", 1);
+        return "home";
+    }
+
+    @GetMapping("/page/{count}")
+    public String home(Model model, @PathVariable int count) {
+        model.addAttribute("pages", ScrapeConstants.FJ24_MAIN_URL);
+        model.addAttribute("data", fJ24DataService.readDataFromJson(count));
+        model.addAttribute("pageIndex", count);
         return "home";
     }
 
@@ -31,11 +40,13 @@ public class FJ24Controller {
     public String job(Model model, @PathVariable String param) {
         logger.info("Param: " + param);
         Map<String, String> jobMap = new TreeMap<>();
-        List<Map<String, String>> data = fJ24DataService.readDataFromJson();
-        for (Map dataMap : data) {
-            if (dataMap.get("Navigation").equals(param)) {
-                jobMap.putAll(dataMap);
-                break;
+        for(int i=1; i<=ScrapeConstants.FJ24_MAIN_URL.length; i++ ) {
+            List<Map<String, String>> data = fJ24DataService.readDataFromJson(i);
+            for (Map dataMap : data) {
+                if (dataMap.get("Navigation").equals(param)) {
+                    jobMap.putAll(dataMap);
+                    break;
+                }
             }
         }
 
@@ -48,17 +59,21 @@ public class FJ24Controller {
     // Method to search with keyword
     @GetMapping("/category/{param}")
     public String search(Model model, @PathVariable String param) {
+        if(param.startsWith("jobs-in-")){
+            param = param.split("-")[2];
+        }
         logger.info("Param: " + param);
         List<Map<String, String>> jobsList = new ArrayList<>();
-
-        List<Map<String, String>> data = fJ24DataService.readDataFromJson();
-        for (Map dataMap : data) {
-            StringBuffer buffer = new StringBuffer();
-            dataMap.forEach((key, val) -> {
-                buffer.append(key).append(" ").append(val);
-            });
-            if (buffer.toString().toLowerCase().contains(param.toLowerCase())) {
-                jobsList.add(dataMap);
+        for(int i=1; i<=ScrapeConstants.FJ24_MAIN_URL.length; i++ ) {
+            List<Map<String, String>> data = fJ24DataService.readDataFromJson(i);
+            for (Map dataMap : data) {
+                StringBuffer buffer = new StringBuffer();
+                dataMap.forEach((key, val) -> {
+                    buffer.append(key).append(" ").append(val);
+                });
+                if (buffer.toString().toLowerCase().contains(param.toLowerCase())) {
+                    jobsList.add(dataMap);
+                }
             }
         }
         if(jobsList.size() == 0){
@@ -68,5 +83,10 @@ public class FJ24Controller {
         }
 
         return "home";
+    }
+
+    @GetMapping("/tag/{param}")
+    public String tag(Model model, @PathVariable String param) {
+        return search(model,param);
     }
 }

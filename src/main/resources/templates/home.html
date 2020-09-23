@@ -22,24 +22,27 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-12 col-md-9 col-lg-9 mt-1">
+        <div class="col-sm-12 col-md-8 col-lg-8 mt-1">
             <div th:if="${data != '' && data != null}" th:each="map : ${data}">
                 <div class="card border-0">
                     <div class="card-body">
-                        <small class="card-text text-primary" th:text="${map.get('Job Location')}"></small> <small
+                        <small class="card-text text-muted" th:text="${map.get('Job Location')}"></small> <small
                             class="card-text float-right text-muted"
                             th:text="'Date Posted: '+${map.get('Date')}"> </small>
-                        <h4 class="card-title" th:text="${map.get('Company Name')}"></h4>
-                        <h5 class="card-title" th:text="${map.postTitle}"></h5>
+                        <h4 class="card-title text-dark" th:text="${map.postTitle}"></h4>
                         <p class="card-title" th:text="${map.Summary}"></p>
                         <a th:href="@{/job/{id}(id=${map.Navigation})}" class="btn btn-info">Read More</a>
                     </div>
                 </div>
             </div>
         </div>
-        <th:block th:include="fragments/locationJobs"/>
+        <div class="col-sm-12 col-md-4 col-lg-4">
+            <th:block th:include="fragments/locationJobs"/>
+            <th:block th:include="fragments/companyJobs"/>
+        </div>
     </div>
 
+    <th:block th:include="fragments/pagination"/>
 </div>
 
 

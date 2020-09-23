@@ -1,0 +1,5 @@
+<nav aria-label="Page navigation example">
+    <ul class="pagination pagination-md">
+        <li class="page-item" th:each="task,iter : ${pages}" th:classappend="${pageIndex == iter.index+1} ? active:''"><a class="page-link" th:href="@{/page/{id}(id=${iter.index}+1)}" th:text="${iter.index}+1"></a></li>
+    </ul>
+</nav>

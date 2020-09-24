@@ -15,14 +15,18 @@ import java.util.*;
 public class FJ24API {
     Logger logger = LoggerFactory.getLogger(FJ24API.class);
 
-    @GetMapping("/scrape/{name}")
-    public String scrape(@PathVariable String name) {
+    @GetMapping("/scrape/{name}/{startIndex}/{endIndex}")
+    public String scrape(@PathVariable String name, @PathVariable int startIndex, @PathVariable int endIndex) {
         Map<Integer,Set<String>> navigatorURLSMap = new HashMap<>();
 
+        List<String> constructedUrls = new ArrayList<>();
+        for(int i=startIndex; i<=endIndex; i++){
+            constructedUrls.add(ScrapeConstants.FJ24_MAIN_URL+i);
+        }
 
-        //Get the actual URL to be scraped from main page
+        //Get the actual URLS to be scraped from main page
         if("fj24".equalsIgnoreCase(name)){
-            navigatorURLSMap = FJ24ScrapeUtil.scrapeMainPageUrls(ScrapeConstants.FJ24_MAIN_URL, ScrapeConstants.FJ24_MAIN_URL_FILTERS);
+            navigatorURLSMap = FJ24ScrapeUtil.scrapeMainPageUrls(constructedUrls, ScrapeConstants.FJ24_MAIN_URL_FILTERS);
         }
         //http://freshersjobs24.com/page/2/
         // Loop through the urls and scrape

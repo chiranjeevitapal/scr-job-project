@@ -1,6 +1,7 @@
 package com.my.soup.utils;
 
 import com.my.soup.constants.ScrapeConstants;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -8,6 +9,8 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.DateFormat;
@@ -16,13 +19,13 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class FJ24ScrapeUtil {
-    public static Map<Integer,Set<String>> scrapeMainPageUrls(String URLs[], String[] filters) {
+    public static Map<Integer,Set<String>> scrapeMainPageUrls(List<String> URLS, String[] filters) {
         Document doc = null;
         Map<Integer,Set<String>> navigatorUrlsMap = new HashMap<>();
 
         try{
             int pageCount = 1;
-            for(String mainUrl : ScrapeConstants.FJ24_MAIN_URL){
+            for(String mainUrl : URLS){
                 Set<String> navigatorUrls = new HashSet<>();
                 doc = Jsoup.connect(mainUrl).get();
                 Elements links = doc.select("a[href]");
@@ -38,10 +41,6 @@ public class FJ24ScrapeUtil {
             ioe.printStackTrace();
         }
         return navigatorUrlsMap;
-    }
-
-    public static void main(String args[]){
-        scrapeData("http://freshersjobs24.com/focus-softnet-freshers-recruitment-technical-support-consultant-sql-hyderabad/");
     }
 
     public static Map<String,String> scrapeData(String URL) {
@@ -164,6 +163,24 @@ public class FJ24ScrapeUtil {
         }
         return outputDateStr;
 
+    }
+
+    public static int totalDataFiles() {
+        File root = new File(".");
+        String fileName = "data";
+        int fileCount = 0;
+        try {
+            Collection files = FileUtils.listFiles(root, null, false);
+
+            for (Iterator iterator = files.iterator(); iterator.hasNext();) {
+                File file = (File) iterator.next();
+                if (file.getName().startsWith(fileName))
+                    fileCount++;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return fileCount;
     }
 
 }

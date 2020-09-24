@@ -2,6 +2,7 @@ package com.my.soup.controller;
 
 import com.my.soup.constants.ScrapeConstants;
 import com.my.soup.service.FJ24DataService;
+import com.my.soup.utils.FJ24ScrapeUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ public class FJ24Controller {
 
     @GetMapping("/")
     public String home(Model model) {
-        model.addAttribute("pages", ScrapeConstants.FJ24_MAIN_URL);
+        model.addAttribute("pages", FJ24ScrapeUtil.totalDataFiles());
         model.addAttribute("data", fJ24DataService.readDataFromJson(1));
         model.addAttribute("pageIndex", 1);
         return "home";
@@ -28,7 +29,7 @@ public class FJ24Controller {
 
     @GetMapping("/page/{count}")
     public String home(Model model, @PathVariable int count) {
-        model.addAttribute("pages", ScrapeConstants.FJ24_MAIN_URL);
+        model.addAttribute("pages", FJ24ScrapeUtil.totalDataFiles());
         model.addAttribute("data", fJ24DataService.readDataFromJson(count));
         model.addAttribute("pageIndex", count);
         return "home";
@@ -40,7 +41,7 @@ public class FJ24Controller {
     public String job(Model model, @PathVariable String param) {
         logger.info("Param: " + param);
         Map<String, String> jobMap = new TreeMap<>();
-        for(int i=1; i<=ScrapeConstants.FJ24_MAIN_URL.length; i++ ) {
+        for(int i = 1; i<= FJ24ScrapeUtil.totalDataFiles(); i++ ) {
             List<Map<String, String>> data = fJ24DataService.readDataFromJson(i);
             for (Map dataMap : data) {
                 if (dataMap.get("Navigation").equals(param)) {
@@ -49,7 +50,6 @@ public class FJ24Controller {
                 }
             }
         }
-
         String[] howToApplyLinks = jobMap.get("How To Apply").split(" - ");
         model.addAttribute("howToApplyLinks", howToApplyLinks);
         model.addAttribute("job", jobMap);
@@ -57,14 +57,11 @@ public class FJ24Controller {
     }
 
     // Method to search with keyword
-    @GetMapping("/category/{param}")
+    @GetMapping("/search/{param}")
     public String search(Model model, @PathVariable String param) {
-        if(param.startsWith("jobs-in-")){
-            param = param.split("-")[2];
-        }
         logger.info("Param: " + param);
         List<Map<String, String>> jobsList = new ArrayList<>();
-        for(int i=1; i<=ScrapeConstants.FJ24_MAIN_URL.length; i++ ) {
+        for(int i=1; i<=FJ24ScrapeUtil.totalDataFiles(); i++ ) {
             List<Map<String, String>> data = fJ24DataService.readDataFromJson(i);
             for (Map dataMap : data) {
                 StringBuffer buffer = new StringBuffer();
@@ -87,6 +84,17 @@ public class FJ24Controller {
 
     @GetMapping("/tag/{param}")
     public String tag(Model model, @PathVariable String param) {
+        if(param.startsWith("jobs-in-")){
+            param = param.split("-")[2];
+        }
+        return search(model,param);
+    }
+
+    @GetMapping("/category/{param}")
+    public String category(Model model, @PathVariable String param) {
+        if(param.startsWith("jobs-in-")){
+            param = param.split("-")[2];
+        }
         return search(model,param);
     }
 }

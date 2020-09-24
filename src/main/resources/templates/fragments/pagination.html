@@ -1,5 +1,17 @@
 <nav aria-label="Page navigation example">
-    <ul class="pagination pagination-md">
-        <li class="page-item" th:each="task,iter : ${pages}" th:classappend="${pageIndex == iter.index+1} ? active:''"><a class="page-link" th:href="@{/page/{id}(id=${iter.index}+1)}" th:text="${iter.index}+1"></a></li>
+    <ul class="pagination pagination-md justify-content-center">
+        <li class="page-item" th:classappend="${pageIndex == 1} ? disabled : ''">
+            <a class="page-link" th:href="@{/page/{id}(id=${pageIndex}-1)}" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+                <span class="sr-only">Previous</span>
+            </a>
+        </li>
+        <li class="page-item" th:each="iter: ${#numbers.sequence(1, pages)}" th:classappend="${pageIndex == iter} ? active:''"><a class="page-link" th:href="@{/page/{id}(id=${iter})}" th:text="${iter}"></a></li>
+        <li class="page-item" th:classappend="${pageIndex == pages} ? disabled : ''">
+            <a class="page-link" th:href="@{/page/{id}(id=${pageIndex}+1)}" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+                <span class="sr-only">Next</span>
+            </a>
+        </li>
     </ul>
 </nav>

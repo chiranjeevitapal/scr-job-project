@@ -31,12 +31,12 @@
                             th:text="'Date Posted: '+${map.get('Date')}"> </small>
                         <h4 class="card-title text-dark" th:text="${map.postTitle}"></h4>
                         <p class="card-title" th:text="${map.Summary}"></p>
-                        <a th:href="@{/job/{id}(id=${map.Navigation})}" class="btn btn-info">Read More</a>
+                        <a th:href="@{/job/{id}(id=${map.Navigation})}" class="btn btn-dark">Read More</a>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-sm-12 col-md-4 col-lg-4">
+        <div class="col-sm-12 col-md-4 col-lg-4 mt-3">
             <th:block th:include="fragments/locationJobs"/>
             <th:block th:include="fragments/companyJobs"/>
         </div>

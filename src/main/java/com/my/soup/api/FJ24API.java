@@ -28,7 +28,6 @@ public class FJ24API {
         if("fj24".equalsIgnoreCase(name)){
             navigatorURLSMap = FJ24ScrapeUtil.scrapeMainPageUrls(constructedUrls, ScrapeConstants.FJ24_MAIN_URL_FILTERS);
         }
-        //http://freshersjobs24.com/page/2/
         // Loop through the urls and scrape
         for(int i = 1; i<=navigatorURLSMap.size(); i++) {
             List<Map<String, String>> data = new ArrayList<>();

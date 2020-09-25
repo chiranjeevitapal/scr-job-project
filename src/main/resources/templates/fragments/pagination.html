@@ -1,4 +1,4 @@
-<nav aria-label="Page navigation example">
+<nav aria-label="Page navigation example" th:classappend="${pages == 0} ? 'd-none' : ''">
     <ul class="pagination pagination-md justify-content-center">
         <li class="page-item" th:classappend="${pageIndex == 1} ? disabled : ''">
             <a class="page-link" th:href="@{/page/{id}(id=${pageIndex}-1)}" aria-label="Previous">

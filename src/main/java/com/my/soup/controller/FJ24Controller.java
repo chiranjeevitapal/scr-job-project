@@ -78,6 +78,8 @@ public class FJ24Controller {
         }else{
             model.addAttribute("data", jobsList);
         }
+        model.addAttribute("pages", 0);
+        model.addAttribute("pageIndex", 1);
 
         return "home";
     }

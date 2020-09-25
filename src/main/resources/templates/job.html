@@ -8,9 +8,12 @@
 </head>
 <body class="pt-5">
 <th:block th:include="fragments/header"/>
-<div class="container">
+<div class="container-fluid">
     <div class="row">
-        <div class="col-sm-12 col-md-8 col-lg-8">
+        <div class="col-lg-2 mt-3 d-none d-lg-block">
+            <th:block th:include="fragments/leftBanner"/>
+        </div>
+        <div class="col-sm-12 col-md-8 col-lg-6">
             <div class="list-group mt-3 borderless">
                 <div class="list-group-item">
                     <h4 th:text="${job.postTitle}"></h4>
@@ -27,7 +30,8 @@
                 </div>
             </div>
         </div>
-        <div class="col-sm-12 col-md-4 col-lg-4 mt-1">
+        <div class="col-sm-12 col-md-4 col-lg-2 mt-1">
+            <th:block th:include="fragments/rightBanner"/>
             <th:block th:include="fragments/locationJobs"/>
             <th:block th:include="fragments/companyJobs"/>
         </div>

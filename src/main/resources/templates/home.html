@@ -2,13 +2,10 @@
 <html lang="en"
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymleaf.org">
-<head>
-    <th:block th:include="fragments/include"/>
-    <title>Fresher Jobs</title>
-</head>
+<th:block th:include="fragments/homehead"/>
 <body class="pt-5">
 <th:block th:include="fragments/header"/>
-<div class="container">
+<div class="container-fluid">
     <div th:if="${data == '' || data == null}">
         <div class="row">
             <div class="col-sm-12 col-md-9 col-lg-9 mt-3">
@@ -22,6 +19,9 @@
         </div>
     </div>
     <div class="row">
+        <div class="col-lg-2 mt-3 d-none d-lg-block">
+            <th:block th:include="fragments/leftBanner"/>
+        </div>
         <div class="col-sm-12 col-md-8 col-lg-8 mt-1">
             <div th:if="${data != '' && data != null}" th:each="map : ${data}">
                 <div class="card border-0">
@@ -36,7 +36,8 @@
                 </div>
             </div>
         </div>
-        <div class="col-sm-12 col-md-4 col-lg-4 mt-3">
+        <div class="col-sm-12 col-md-4 col-lg-2 mt-3">
+            <th:block th:include="fragments/rightBanner"/>
             <th:block th:include="fragments/locationJobs"/>
             <th:block th:include="fragments/companyJobs"/>
         </div>

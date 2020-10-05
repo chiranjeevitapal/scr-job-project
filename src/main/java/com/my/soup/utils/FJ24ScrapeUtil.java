@@ -2,6 +2,7 @@ package com.my.soup.utils;
 
 import com.my.soup.constants.ScrapeConstants;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -13,6 +14,7 @@ import org.jsoup.select.Elements;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URL;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -52,6 +54,9 @@ public class FJ24ScrapeUtil {
             Elements links = doc.select("a[href]");
             String postTitle = doc.select("h1.post-title").text();
             scrapedDataMap.put("postTitle", postTitle);
+
+            Element image = doc.select("img.size-full").first();
+
             //remove all unwanted divs
             doc.select("div.code-block").remove();
             doc.select("p.no-break").remove();
@@ -63,11 +68,23 @@ public class FJ24ScrapeUtil {
             scrapeParas(scrapedDataMap, paras);
             scrapeApplyUrls(scrapedDataMap, links);
             scrapeNavURL(scrapedDataMap, URL);
+            scrapeImage(scrapedDataMap, image);
 
         } catch(IOException ioe){
             ioe.printStackTrace();
         }
         return scrapedDataMap;
+    }
+
+    private static void scrapeImage(Map<String, String> scrapedDataMap, Element image) throws IOException {
+        String url = image.attr("src");
+        if(Objects.isNull(url)){
+            scrapedDataMap.put("image","");
+        }else{
+            byte[] imageBytes = IOUtils.toByteArray(new URL(url));
+            String base64 = Base64.getEncoder().encodeToString(imageBytes);
+            scrapedDataMap.put("image","data:image/png;base64,"+base64);
+        }
     }
 
     private static void scrapeParas(Map<String, String> scrapedDataMap, Elements paras) {

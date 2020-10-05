@@ -16,10 +16,10 @@
         <div class="col-sm-12 col-md-8 col-lg-6">
             <div class="list-group mt-3 borderless">
                 <div class="list-group-item">
-                    <h4 th:text="${job.postTitle}"></h4>
+                    <h4 th:text="${job.postTitle}"></h4> <img th:src="*{job.image}" alt="">
                 </div>
                 <div class="list-group-item"  th:each="map : ${job}"
-                     th:if="${map.value != null && map.value != '' && map.key != 'Navigation' && map.key != 'How To Apply' && map.key != 'postTitle'}">
+                     th:if="${map.value != null && map.value != '' && map.key != 'Navigation' && map.key != 'How To Apply' && map.key != 'postTitle' && map.key != 'image'}">
                     <div class="d-flex w-100 justify-content-between">
                         <h5 class="mb-1" th:text="${map.key}"></h5>
                     </div>

@@ -36,7 +36,9 @@ public class FJ24API {
                 logger.info(url);
                 Map<String, String>scrapedDataMap;
                 scrapedDataMap = FJ24ScrapeUtil.scrapeData(url);
-                data.add(scrapedDataMap);
+                if(!scrapedDataMap.isEmpty()){
+                    data.add(scrapedDataMap);
+                }
             }
             logger.info("started writing data to json file");
             FJ24ScrapeUtil.writeToJson(data, "data"+i+".json");

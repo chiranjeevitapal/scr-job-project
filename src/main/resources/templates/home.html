@@ -25,13 +25,16 @@
         <div class="col-sm-12 col-md-8 col-lg-8 mt-1">
             <div th:if="${data != '' && data != null}" th:each="map : ${data}">
                 <div class="card border-0">
-                    <div class="card-body">
-                        <small class="card-text text-muted" th:text="${map.get('Job Location')}"></small> <small
-                            class="card-text float-right text-muted"
-                            th:text="'Date Posted: '+${map.get('Date')}"> </small>
-                        <h4 class="card-title text-dark" th:text="${map.postTitle}"></h4>
-                        <p class="card-title" th:text="${map.Summary}"></p>
-                        <a th:href="@{/job/{id}(id=${map.Navigation})}" class="btn btn-dark">Read More</a>
+                    <div class="row card-body">
+                        <img class="col-sm-2" th:src="*{map.image}" alt="">
+                        <div class="col-sm-10">
+                            <small class="card-text text-muted" th:text="${map.get('Job Location')}"></small> <small
+                                class="card-text float-right text-muted"
+                                th:text="'Date Posted: '+${map.get('Date')}"> </small>
+                            <h4 class="card-title text-dark" th:text="${map.postTitle}"></h4>
+                            <p class="card-title" th:text="${map.Summary}"></p>
+                            <a th:href="@{/job/{id}(id=${map.Navigation})}" class="btn btn-dark">Read More</a>
+                        </div>
                     </div>
                 </div>
             </div>
